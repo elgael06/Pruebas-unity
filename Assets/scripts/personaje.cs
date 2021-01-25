@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class personaje : MonoBehaviour
 {
-    float velocidad = 20;
-    float salto = 1500;
-    float rotacion = 40;
+    float velocidad = 10;
+    private float salto = 1500;
+    // float rotacion = 40;
     bool canJump = true;
     Rigidbody rb;
 
@@ -18,18 +18,37 @@ public class personaje : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        matenerDePieAlPlayer();
+        movimientos();
+        if (Input.GetKeyDown(KeyCode.Space)&& canJump)
+        {
+            Debug.Log("saltar");
+            canJump = false;
+            _onSaltar();
+        }        
+    }
+    private void matenerDePieAlPlayer(){
         var angles = transform.rotation.eulerAngles;
+        
+        if(angles.x!=0 && angles.y!=0 && angles.z!=0){
+            angles.x    = 0;
+            angles.y    = 0;
+            angles.z    = 0;
+            transform.rotation = Quaternion.Euler(angles);
+        }
+    }
+    private void movimientos(){
         if (Input.GetKey(KeyCode.RightArrow))
         {
             Debug.Log("izquierda..");
-            angles.y += Time.deltaTime * rotacion;
+            // angles.y += Time.deltaTime * rotacion;
             // transform.rotation = Quaternion.Euler(angles);
             _desplazarEnY(-1);
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             Debug.Log("Derecha...");
-            angles.y += Time.deltaTime * -rotacion;
+            // angles.y += Time.deltaTime * -rotacion;
             // transform.rotation = Quaternion.Euler(angles);
             _desplazarEnY();
         }
@@ -43,15 +62,8 @@ public class personaje : MonoBehaviour
             Debug.Log("abanzar...");
             _desplazarEnX(-1);
         }
-        if (Input.GetKeyDown(KeyCode.Space)&& canJump)
-        {
-            Debug.Log("saltar");
-            canJump = false;
-            _onSaltar();
-        }        
     }
-
-    void _desplazarEnX(int dir = 1)
+    private void _desplazarEnX(int dir = 1)
     {
         float verticalInput = Input.GetAxis("Vertical");
         float nuevaPos = verticalInput * velocidad * Time.deltaTime;
@@ -61,7 +73,7 @@ public class personaje : MonoBehaviour
         ? transform.position - new Vector3(-nuevaPos, 0, 0)
         : transform.position + new Vector3(nuevaPos, 0, 0);
     }
-    void _desplazarEnY(int dir = 1)
+    private void _desplazarEnY(int dir = 1)
     {
         float nuevaPos = dir * velocidad * Time.deltaTime;
         Debug.Log(dir);
@@ -71,9 +83,9 @@ public class personaje : MonoBehaviour
         ? transform.position - new Vector3(0, 0,-nuevaPos)
         : transform.position + new Vector3( 0, 0,nuevaPos);
     }
-    private void _onSaltar()
+    private private void _onSaltar()
     {
-        GetComponent<Rigidbody>().AddForce(0,salto*Time.deltaTime*100,0);
+        GetComponent<Rigidbody>().AddForce(0,salto*Time.deltaTime*10,0);
     }
 
     private void OnCollisionEnter(Collision other)
