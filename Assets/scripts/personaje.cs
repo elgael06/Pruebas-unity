@@ -66,7 +66,8 @@ public class personaje : MonoBehaviour
     private void _desplazarEnX(int dir = 1)
     {
         float verticalInput = Input.GetAxis("Vertical");
-        float nuevaPos = verticalInput * velocidad * Time.deltaTime;
+        Debug.Log("verticalInput "+verticalInput);
+        float nuevaPos = verticalInput * velocidad * 1.2f * Time.deltaTime;
 
         //update the position    
         transform.position = dir == -1
@@ -75,6 +76,8 @@ public class personaje : MonoBehaviour
     }
     private void _desplazarEnY(int dir = 1)
     {
+        // float verticalInput = Input.GetAxis("Horizontal");
+        // float nuevaPos = dir * verticalInput * velocidad * Time.deltaTime;
         float nuevaPos = dir * velocidad * Time.deltaTime;
         Debug.Log(dir);
         
@@ -83,7 +86,7 @@ public class personaje : MonoBehaviour
         ? transform.position - new Vector3(0, 0,-nuevaPos)
         : transform.position + new Vector3( 0, 0,nuevaPos);
     }
-    private private void _onSaltar()
+    private void _onSaltar()
     {
         GetComponent<Rigidbody>().AddForce(0,salto*Time.deltaTime*10,0);
     }
